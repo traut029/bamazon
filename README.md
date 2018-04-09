@@ -44,3 +44,11 @@ Selecting Add new product queries the user for the item name, department name, p
 
 If we recheck Products For Sale our new item "Chocolate Bar" now exists in the database.
 ![images](images/image14.png)
+
+## bamazonsupervisor.js
+
+If we run bamazonsupervisor.js we are given the options to view product sales by department or to create a new department.  If we view product sales:
+![images](images/image15.png)
+
+If we create a new department we will be prompted by inquirer for the new department name and over head costs. Afterwards it will log that the new department is initiated. If we recheck our table the new department has been added.
+![images](images/image16.png)

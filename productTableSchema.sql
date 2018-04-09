@@ -13,3 +13,9 @@ CREATE TABLE products (
  
   PRIMARY KEY (item_id)
 );
+
+
+
+use bamazon;
+ALTER TABLE products
+add column product_sales DECIMAL(10,2) NOT NULL DEFAULT '0.00'

@@ -48,49 +48,59 @@ function prompt1() {
                 },
             ])
             .then(function (answer) {
-                    // get the information of the chosen item
-                    var chosenItem=0;
-                    for (var i = 0; i < results.length; i++) {
-                        if (results[i].item_id == answer.item_id) {
-                            chosenItem = results[i];
-                        }
+                // get the information of the chosen item
+                var chosenItem = 0;
+                for (var i = 0; i < results.length; i++) {
+                    if (results[i].item_id == answer.item_id) {
+                        chosenItem = results[i];
                     }
-                    var stockDifference= chosenItem.stock_quantity-parseInt(answer.units);
-                   
-                    // determine if bid was high enough
-                    if(chosenItem==0){
-                        console.log("\nInvalid item ID!\n")
-                        start();
-                    }
-                    else if (chosenItem.item_id == parseInt(answer.item_id)&&stockDifference>=0) {
-                        
-                        // bid was high enough, so update db, let the user know, and start over
-                        connection.query(
-                            "UPDATE products SET ? WHERE ?",
-                            [
-                               
-                                {
-                                    stock_quantity:stockDifference
-                                },
-                                {
-                                item_id: chosenItem.item_id
-                                }
-                            ],
-                            function (error) {
-                                if (error) throw err;
-                                var totalPrice=chosenItem.price*answer.units;
-                                console.log("\nOrder placed Successfully!\n");
-                                console.log("Total cost: $ "+totalPrice+"\n")
-                                start();
-                            }
-                        );
-                    }
-                    else if(stockDifference<0){
-                        console.log("\nInsufficient Quantity!\n")
-                        start();
-                    }
+                }
+                var stockDifference = chosenItem.stock_quantity - parseInt(answer.units);
 
-                });
+
+                // determine if bid was high enough
+                if (chosenItem == 0) {
+                    console.log("\nInvalid item ID!\n")
+                    start();
+                }
+                else if (chosenItem.item_id == parseInt(answer.item_id) && stockDifference >= 0) {
+
+                    // bid was high enough, so update db, let the user know, and start over
+                    var initialSales = chosenItem.product_sales
+                    var totalPrice = chosenItem.price * answer.units;
+                    var newSales = initialSales + totalPrice
+                 
+                    connection.query(
+                        "UPDATE products SET ? WHERE ?",
+                        [
+
+                            {
+                                stock_quantity: stockDifference,
+                                product_sales: newSales
+                            },
+                            {
+                                item_id: chosenItem.item_id,
+
+
+                                
+                            },
+
+                        ],
+                        function (error) {
+                            if (error) throw err;
+
+                            console.log("\nOrder placed Successfully!\n");
+                            console.log("Total cost: $ " + totalPrice + "\n")
+                            start();
+                        }
+                    );
+                }
+                else if (stockDifference < 0) {
+                    console.log("\nInsufficient Quantity!\n")
+                    start();
+                }
+
+            });
     });
 }
 
