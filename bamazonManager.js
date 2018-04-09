@@ -141,10 +141,7 @@ function newProduct() {
                 },
             ])
             .then(function (answer3) {
-             console.log(answer3.product_name)
-             console.log(answer3.department_name)
-             console.log(parseFloat(answer3.price).toFixed(2))
-             console.log(parseInt(answer3.stock_quantity))
+            
               
                 connection.query("insert into products SET ?",
                 [ 
